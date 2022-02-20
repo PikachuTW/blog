@@ -29,15 +29,15 @@
 
   gtag('config', 'G-N7YKSG3GNF');
 </script>
-  <meta name="description" content="尚未完成...">
+  <meta name="description" content="尚未完成">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【discord.js】機器人基本架構與Command Handler">
+<meta property="og:title" content="【從零開始的Discord.js生活】(一) 建立機器人">
 <meta property="og:url" content="https://tailsblog.tk/2022-02-20-Command_Handler/">
 <meta property="og:site_name" content="Tails 的開發筆記">
-<meta property="og:description" content="尚未完成...">
+<meta property="og:description" content="尚未完成">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2022-02-20T06:09:29.000Z">
-<meta property="article:modified_time" content="2022-02-20T09:58:41.970Z">
+<meta property="article:modified_time" content="2022-02-20T16:24:08.721Z">
 <meta property="article:author" content="Tails">
 <meta property="article:tag" content="Discord.js">
 <meta name="twitter:card" content="summary">
@@ -55,7 +55,7 @@
   };
 </script>
 
-  <title>【discord.js】機器人基本架構與Command Handler | Tails 的開發筆記</title>
+  <title>【從零開始的Discord.js生活】(一) 建立機器人 | Tails 的開發筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7YKSG3GNF"></script>
     <script>
@@ -179,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【discord.js】機器人基本架構與Command Handler
+          【從零開始的Discord.js生活】(一) 建立機器人
         </h1>
 
         <div class="post-meta">
@@ -198,7 +198,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>10</span>
+              <span>235</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
@@ -218,7 +218,7 @@
 
       
         <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="你輸入了錯誤的密碼!" data-whm="系統因錯誤而無法編譯內容!">
-  <script id="hbeData" type="hbeData" data-hmacdigest="c97945719a69975a32efd18ec1c12e3f16ca5fb424dd2f1c0d13bbab90cc69da">77a42abe2ee34b548d1ad4c223a6590f52d017dd46c7283c88253cc038c85e7be0497c7f294217a0cd10265b377339ce4168716bab4e8465bb5f544ed7b8b4423c8e98273cb9cbbc3143c27f2c3a94bb8e47347bdc2df22251a29d541e6f9786fda22b52f4976ee18cf0637fd6035f2a7f3a43a9a74ebea8707a0dfdd4e5dade7f6a2770d5724e7b36ab71f57cda502dbe7d4639964a2f7bb088d9dca0a97e79952215a8d862a198fefede7c0b9f90f34393e8e1aa1dcec8db112b90648bd13656c66e3eed12c376e1cfec7ac08af5b63992416adc7fa958523d3eacf1d58d85b71d292f77ea3885231643ff319105953bfdb9ba8bef8e974bd544e8a30200b5d8e7bb82e2d91deb190ad7e8a0995ff9a80cbe40919f34ea9e593efb17eccd0567ff444de107a4ee862d713bacf4fdbbc50ca2498ca3db572cb16aae440a412fd3eeaf30b75f59e70c9c8b1e1c1b8f24be7d1e9ad1c514ca9fe872063eb5a2b0</script>
+  <script id="hbeData" type="hbeData" data-hmacdigest="fd82f32ade9c3d00fd57e480102ccf66601e2c6bb328ed7b31288357c41e710c">77a42abe2ee34b548d1ad4c223a6590f9c39023193b46470cecffe4c059ab2ab76cd0e5db279ee1a7c85ce5f04837df074ef1ab8fef73d2f8770fa057f36653b807cedf6b18419bf7665d312dc4946ca2968ad2ae02d900dd829b345aeef0a796ea7e3cb6a2f46080ec7c3dc223387b6967e3675794edbed5d330fc3f567d85ffe4759d5fa594d4680eeeccaba17888e9151789b76ba2075e64136a3ef52c9a779908dc3c12b2ae0f0bcabe318ca4ed547f2d43e204e15e8cd0241613228b33f39357174c08164ecb4c89e09584249b266080f15e986d56d0be271c422d387b5e7caab5ca08c33d8110ab7f8c39ff68e6ed376a61787469741dd2b7d44d27b762b3137af39d1424f7cc32b877ba9a2fe70d2bd5adbf7803fa992d1ac41d126791aec5f31977fa427729bf8948c8549e92ceb5ef700eb31ba589d7e1bc3cf985744801a56e2b1be35d9c3a6069f26ae1d46c8da0b009c843a30eb3517ffdded7243b88f36ab45da9820cadeb78a8b7a769ce82d9c484892823fee0e737b714c871c4fffe1b0c2c80048d3065e9022bde0c1c8f62078ef5ec56e7f7c37fe5ed8c2fe98eb3bc9d8c0bc436f4845e06c1f33336f4db0e09bbef9b5e9e54686ee00c9bb26cbedd3d922f499f81c770dba9128efa81d0505c104d2dbe2df4c6321acd3755034a3cae36145510398b16f915eb843858d162cd1633869ced24c3dd6f4303b29ed0233c96a97eb1a326ab0b1abe336454fdb8da282cb4add40f9aa56979b0d9601cd22bc4622f972c74d636047c5e0587230d4455d33793a75e83e9bf965c74cb7f6fda6524053146acfeff84b34a5a23b3112da40501a132abe9f723514360a4562660e5687ab4c8438f6dac978c17de0d9736190ee7b307745cbb30d35a7499df7ecd47f4fe5456e830e1efbec98b8b2a0148bc533942c5315c3f7d08b0e47ad469d3789f9a188478d87e11a2913d216ca439c73bb558d1544d6214c505a80cf3f6f45ada89a3fb3d81522453d6bd7b751831c8ffcebab75f06d9a4dfe2827e10704bc200259de85382138adacca8ba9a47c046e590808857bc597b146bfad1c84d8ec711741b282f56df3cecfc521d9456f3615bf8825e2d495df7959dc79b9944abe30b13abe5700258f12a3025ff63b9fab42909e37c3ab26d14e5efc0364c872e7140e42ade55efb7fdfad6473aaf95c92e9478d657bf03c853a7005e715bbb844aeb7e73da162b537fbe617288f98c6ec6fb7c95a54fd1e6172da2f001d0aa54d3c4e17df0a20da65a896e04542badb5a1448670f7955a88b0edbe377c7df684986d30326d6b59a314c1955cc3b440a4a48c60927739810350eeead9be3b94f1b7751339f48660b08d0d8c9400177296101e01e6b8a5057ae56b09f636ef6ca3e4019499efa7872cfd2b6</script>
   <div class="hbe hbe-content">
     <div class="hbe hbe-input hbe-input-blink">
       <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
@@ -243,7 +243,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>文章連結：</strong>
-    <a href="https://tailsblog.tk/2022-02-20-Command_Handler/" title="【discord.js】機器人基本架構與Command Handler">https://tailsblog.tk/2022-02-20-Command_Handler/</a>
+    <a href="https://tailsblog.tk/2022-02-20-Command_Handler/" title="【從零開始的Discord.js生活】(一) 建立機器人">https://tailsblog.tk/2022-02-20-Command_Handler/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 許可協議。轉載請註明出處！
@@ -448,7 +448,7 @@
   var disqus_config = function() {
     this.page.url = "https://tailsblog.tk/2022-02-20-Command_Handler/";
     this.page.identifier = "2022-02-20-Command_Handler/";
-    this.page.title = "【discord.js】機器人基本架構與Command Handler";
+    this.page.title = "【從零開始的Discord.js生活】(一) 建立機器人";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
