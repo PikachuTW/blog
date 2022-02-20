@@ -33,11 +33,11 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="【discord.js】架設進階Command Handler">
 <meta property="og:url" content="https://tailsblog.tk/Command_Handler/">
-<meta property="og:site_name" content="Tails 的部落格">
+<meta property="og:site_name" content="Tails 的開發筆記">
 <meta property="og:description" content="這篇文章你可以看到程式碼">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2022-02-20T06:09:29.000Z">
-<meta property="article:modified_time" content="2022-02-20T09:01:23.300Z">
+<meta property="article:modified_time" content="2022-02-20T09:24:18.917Z">
 <meta property="article:author" content="Tails">
 <meta property="article:tag" content="Discord.js">
 <meta name="twitter:card" content="summary">
@@ -55,7 +55,7 @@
   };
 </script>
 
-  <title>【discord.js】架設進階Command Handler | Tails 的部落格</title>
+  <title>【discord.js】架設進階Command Handler | Tails 的開發筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7YKSG3GNF"></script>
     <script>
@@ -115,10 +115,9 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Tails 的部落格</h1>
+      <h1 class="site-title">Tails 的開發筆記</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">我寫各種有趣的東西</p>
   </div>
 
   <div class="site-nav-right">
@@ -176,7 +175,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tails 的部落格">
+      <meta itemprop="name" content="Tails 的開發筆記">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -219,7 +218,7 @@
 
       
         <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="你輸入了錯誤的密碼!" data-whm="系統因錯誤而無法編譯內容!">
-  <script id="hbeData" type="hbeData" data-hmacdigest="d07322fe72d4cac5108dadac5faeff6fc1c4ed69b9ef09ddc3dd97fdcecd8f5e">599caf4a34ae4eb6a1cb253d9f65907ca3e74afb7a08e0105c5c6ce4d3c25d4f6b6bce1af0ccf0f1b110a1bb05289ed585fb1708ab5c2c01480071fcb38f81f220cea30f63b925796dc1c0a9fc4b97c5a72a7ae83ad92edf429a09752833c821c7b22e35fa40a1471e96817c1694a84aa1636970e4f1bfe593a6c5a6e8927f925e4b31d5f26047d65d9611adbc0e3131f0a336e237ba3c528ad6ade7a5c83bbf44286f9f5d2712db11c6d8d86040fba6ced3ad71c81e22e0d39e4eba554855bb87a8bb3f32fcd711f9b288449c97efeeb8628faa7cb970021c9da9429dc4c552c96fb657149d8162fe798b166a6e78ae9961007efc3b04dbbe01813e89f0a77fafddc2b133f9c0c15dbf0a0bbe3aba5dc89e3d981b8f64e1eaf5bc5ecaf9ddc3835b216c0d87fd5447b439bdd957cb62d4896cc85dbe2a40ead7aafa116652d033ff853c4120f2a6849a87ba1412592d0a0fc9ed1444bf992a243e0ac20f0f057e82576d3a242cda6a001db2df13eeac61960e6b656bdc7ae92cdcc336c8542b0a4180b16e929d14c12fa033789dbb9d3241779d68d3282017501190c3cc9ec9b22c01573c11bafe44c5ed4e34f03d8e</script>
+  <script id="hbeData" type="hbeData" data-hmacdigest="c97945719a69975a32efd18ec1c12e3f16ca5fb424dd2f1c0d13bbab90cc69da">77a42abe2ee34b548d1ad4c223a6590f52d017dd46c7283c88253cc038c85e7be0497c7f294217a0cd10265b377339ce4168716bab4e8465bb5f544ed7b8b4423c8e98273cb9cbbc3143c27f2c3a94bb8e47347bdc2df22251a29d541e6f9786fda22b52f4976ee18cf0637fd6035f2a7f3a43a9a74ebea8707a0dfdd4e5dade7f6a2770d5724e7b36ab71f57cda502dbe7d4639964a2f7bb088d9dca0a97e79952215a8d862a198fefede7c0b9f90f34393e8e1aa1dcec8db112b90648bd13656c66e3eed12c376e1cfec7ac08af5b63992416adc7fa958523d3eacf1d58d85b71d292f77ea3885231643ff319105953bfdb9ba8bef8e974bd544e8a30200b5d8e7bb82e2d91deb190ad7e8a0995ff9a80cbe40919f34ea9e593efb17eccd0567ff444de107a4ee862d713bacf4fdbbc50ca2498ca3db572cb16aae440a412fd3eeaf30b75f59e70c9c8b1e1c1b8f24be7d1e9ad1c514ca9fe872063eb5a2b0</script>
   <div class="hbe hbe-content">
     <div class="hbe hbe-input hbe-input-blink">
       <input class="hbe hbe-input-field hbe-input-field-blink" type="password" id="hbePass">
@@ -235,10 +234,28 @@
     
     
     
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>作者： </strong>Tails
+  </li>
+  <li class="post-copyright-link">
+    <strong>文章連結：</strong>
+    <a href="https://tailsblog.tk/Command_Handler/" title="【discord.js】架設進階Command Handler">https://tailsblog.tk/Command_Handler/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
 
       <footer class="post-footer">
+          
           <div class="post-tags">
-              <a href="/tags/Discord-js/" rel="tag"># Discord.js</a>
+              <a href="/tags/Discord-js/" rel="tag"><i class="fa fa-tag"></i> Discord.js</a>
           </div>
 
         
