@@ -29,28 +29,38 @@
 
   gtag('config', 'G-N7YKSG3GNF');
 </script>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Tails 的開發筆記">
-<meta property="og:url" content="https://tailsblog.tk/">
+  <meta name="description" content="這篇將會教你如何在Node.js使用MongoDB資料庫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2022-03-25-01">
+<meta property="og:url" content="https://tailsblog.tk/2022-03-25-01/">
 <meta property="og:site_name" content="Tails 的開發筆記">
+<meta property="og:description" content="這篇將會教你如何在Node.js使用MongoDB資料庫">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/CqAPzon.png">
+<meta property="og:image" content="https://i.imgur.com/MH3PZ2D.png">
+<meta property="og:image" content="https://i.imgur.com/EAN7fBR.png">
+<meta property="og:image" content="https://i.imgur.com/5x8vrfz.png">
+<meta property="og:image" content="https://i.imgur.com/jNQboFi.png">
+<meta property="article:published_time" content="2022-03-25T15:30:32.000Z">
+<meta property="article:modified_time" content="2022-03-26T00:21:38.245Z">
 <meta property="article:author" content="Tails">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/CqAPzon.png">
 
-<link rel="canonical" href="https://tailsblog.tk/">
+<link rel="canonical" href="https://tailsblog.tk/2022-03-25-01/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-TW'
   };
 </script>
 
-  <title>Tails 的開發筆記</title>
+  <title>2022-03-25-01 | Tails 的開發筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7YKSG3GNF"></script>
     <script>
@@ -154,9 +164,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
@@ -172,10 +183,9 @@
       <meta itemprop="name" content="Tails 的開發筆記">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022-03-25-01/" class="post-title-link" itemprop="url">2022-03-25-01</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          2022-03-25-01
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -212,115 +222,79 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>這篇將會教你如何在Node.js使用MongoDB資料庫</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022-03-25-01/" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <p>這篇將會教你如何在Node.js使用MongoDB資料庫</p>
+<span id="more"></span>
+
+<h1 id="創建MongoDB資料庫"><a href="#創建MongoDB資料庫" class="headerlink" title="創建MongoDB資料庫"></a>創建MongoDB資料庫</h1><p>先到 <a target="_blank" rel="noopener" href="https://www.mongodb.com/">https://www.mongodb.com/</a> 註冊一個帳號</p>
+<p>註冊完帳號之後，創建一個資料庫</p>
+<ol>
+<li>選擇”Shared”<br><img src="https://i.imgur.com/CqAPzon.png">  </li>
+<li>這裡就選離你要連線的機器最近的地方就好，臺灣的話Google Cloud有據點，香港則是AWS，馬來西亞兩者皆可，如果是用美國的機器那就選美國，總之越近延遲越低。最後最底下的Cluster Name修改一下就可以Create</li>
+<li>接著創建帳號密碼，然後底下的IP位址請填0.0.0.0，這樣就不用擔心連線位址的問題，從任何地方都可以連<br><img src="https://i.imgur.com/MH3PZ2D.png">  </li>
+</ol>
+<h1 id="基本連接"><a href="#基本連接" class="headerlink" title="基本連接"></a>基本連接</h1><p>開一個新資料夾，創一個 <code>index.js</code></p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br><span class="line">npm install mongoose</span><br></pre></td></tr></table></figure>
+
+<p>到儀表版上找到Connect&gt;Connect your application<br><img src="https://i.imgur.com/EAN7fBR.png">  </p>
+<p>點選 <code>Node 2.2.12 or later</code> (一定要) ，你會得到類似這樣的一個字串<br><img src="https://i.imgur.com/5x8vrfz.png">  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodb://tails:&lt;password&gt;@tails-blog-shard-00-00.hurk2.mongodb.net:27017,tails-blog-shard-00-01.hurk2.mongodb.net:27017,tails-blog-shard-00-02.hurk2.mongodb.net:27017/myFirstDatabase?ssl=true&amp;replicaSet=atlas-zdka9q-shard-0&amp;authSource=admin&amp;retryWrites=true&amp;w=majority</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>&lt;password&gt;</code> 必須換成密碼，而myFirstDatabase為資料庫名稱，也可以替換</p>
+<p>這串就相當於機器人的金鑰，我們叫他MONGO URI</p>
+<p>接著執行這段程式碼，如果你的console有跑出已連接，就代表你成功了!</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">&#x27;mongoose&#x27;</span>);</span><br><span class="line"></span><br><span class="line">mongoose</span><br><span class="line">    .connect(<span class="string">&#x27;YOUR MONGO URI&#x27;</span>, &#123;</span><br><span class="line">        <span class="attr">useNewUrlParser</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">useUnifiedTopology</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">    .then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;已經連線到資料庫&#x27;</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">    .catch(<span class="function">(<span class="params">err</span>) =&gt;</span> <span class="built_in">console</span>.log(err));</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/jNQboFi.png">  </p>
+<h1 id="基本資料庫的操作"><a href="#基本資料庫的操作" class="headerlink" title="基本資料庫的操作"></a>基本資料庫的操作</h1><p>在上面我們成功的創建了一個我們的資料庫</p>
+
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://tailsblog.tk/2022-03-22-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://i.imgur.com/MTWQbeh.png">
-      <meta itemprop="name" content="Tails">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tails 的開發筆記">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022-03-22-01/" class="post-title-link" itemprop="url">【Discord.js】製作無資料庫Snipe指令的方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2022-03-22 15:08:32" itemprop="dateCreated datePublished" datetime="2022-03-22T15:08:32+08:00">2022-03-22</time>
-            </span>
-
-          
-            <span class="post-meta-item" title="文章字數">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">文章字數：</span>
-              <span>168</span>
-            </span>
-            <span class="post-meta-item" title="所需閱讀時間">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>2 分鐘</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>這篇我們將用我在Github上的 <a target="_blank" rel="noopener" href="https://github.com/PikachuTW/Discord.js-v13-Command-Handler">Command handler</a> 作為範例進行教學，成果程式碼會放在結尾</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022-03-22-01/" rel="contents">
-                閱讀全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>作者： </strong>Tails
+  </li>
+  <li class="post-copyright-link">
+    <strong>文章連結：</strong>
+    <a href="https://tailsblog.tk/2022-03-25-01/" title="2022-03-25-01">https://tailsblog.tk/2022-03-25-01/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022-03-22-01/" rel="prev" title="【Discord.js】製作無資料庫Snipe指令的方法">
+      <i class="fa fa-chevron-left"></i> 【Discord.js】製作無資料庫Snipe指令的方法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -367,6 +341,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%B5%E5%BB%BAMongoDB%E8%B3%87%E6%96%99%E5%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">創建MongoDB資料庫</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%80%A3%E6%8E%A5"><span class="nav-number">2.</span> <span class="nav-text">基本連接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">基本資料庫的操作</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -485,6 +460,25 @@
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e5149df7037734f108df',
+      clientSecret: '814c0fdc6851e49a53adbb007fa0ba331ee52f09',
+      repo        : 'blog-comments',
+      owner       : 'PikachuTW',
+      admin       : ['PikachuTW'],
+      id          : '072d95299442fa272022df01d7c564be',
+        language: 'zh-TW',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>
