@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://i.imgur.com/MTWQbeh.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://i.imgur.com/MTWQbeh.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://i.imgur.com/MTWQbeh.png">
+  <link rel="mask-icon" href="https://i.imgur.com/MTWQbeh.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tailsblog.tk","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N7YKSG3GNF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-N7YKSG3GNF');
+</script>
+  <meta name="description" content="這篇將會教你如何在Node.js使用MongoDB資料庫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Node.js】MongoDB資料庫操作教學">
+<meta property="og:url" content="https://tailsblog.tk/2022-03-25-01/">
+<meta property="og:site_name" content="Tails 的開發筆記">
+<meta property="og:description" content="這篇將會教你如何在Node.js使用MongoDB資料庫">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/vz26jRI.png">
+<meta property="og:image" content="https://i.imgur.com/CqAPzon.png">
+<meta property="og:image" content="https://i.imgur.com/MH3PZ2D.png">
+<meta property="og:image" content="https://i.imgur.com/EAN7fBR.png">
+<meta property="og:image" content="https://i.imgur.com/5x8vrfz.png">
+<meta property="og:image" content="https://i.imgur.com/Z5MNlum.png">
+<meta property="og:image" content="https://i.imgur.com/Ok3pLPg.png">
+<meta property="og:image" content="https://i.imgur.com/yjaNYlq.png">
+<meta property="og:image" content="https://i.imgur.com/6STmppy.png">
+<meta property="og:image" content="https://i.imgur.com/6bSPuRm.png">
+<meta property="og:image" content="https://i.imgur.com/wFxhjIp.png">
+<meta property="og:image" content="https://i.imgur.com/zyr4p1e.png">
+<meta property="og:image" content="https://i.imgur.com/vlGJOSb.png">
+<meta property="article:published_time" content="2022-03-25T15:30:32.000Z">
+<meta property="article:modified_time" content="2022-03-27T16:14:16.521Z">
+<meta property="article:author" content="Tails">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/vz26jRI.png">
+
+<link rel="canonical" href="https://tailsblog.tk/2022-03-25-01/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>【Node.js】MongoDB資料庫操作教學 | Tails 的開發筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7YKSG3GNF"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-N7YKSG3GNF');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Tails 的開發筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>文章列表</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://tailsblog.tk/2022-03-25-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.imgur.com/MTWQbeh.png">
+      <meta itemprop="name" content="Tails">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tails 的開發筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Node.js】MongoDB資料庫操作教學
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2022-03-25 23:30:32" itemprop="dateCreated datePublished" datetime="2022-03-25T23:30:32+08:00">2022-03-25</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="文章字數">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">文章字數：</span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="所需閱讀時間">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
+              <span>32 分鐘</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這篇將會教你如何在Node.js使用MongoDB資料庫</p>
+<p><img src="https://i.imgur.com/vz26jRI.png" alt="MongoDB - 維基百科，自由的百科全書"></p>
+<span id="more"></span>
+
+<h1 id="創建MongoDB資料庫"><a href="#創建MongoDB資料庫" class="headerlink" title="創建MongoDB資料庫"></a>創建MongoDB資料庫</h1><p>先到 <a target="_blank" rel="noopener" href="https://www.mongodb.com/">https://www.mongodb.com/</a> 註冊一個帳號</p>
+<p>註冊完帳號之後，創建一個資料庫</p>
+<ol>
+<li>選擇”Shared”<br><img src="https://i.imgur.com/CqAPzon.png">  </li>
+<li>這裡就選離你要連線的機器最近的地方就好，臺灣的話Google Cloud有據點，香港則是AWS，馬來西亞兩者皆可，如果是用美國的機器那就選美國，總之越近延遲越低。最後最底下的Cluster Name修改一下就可以Create</li>
+<li>接著創建帳號密碼，然後底下的IP位址請填0.0.0.0，這樣就不用擔心連線位址的問題，從任何地方都可以連<br><img src="https://i.imgur.com/MH3PZ2D.png">  </li>
+</ol>
+<h1 id="基本連接"><a href="#基本連接" class="headerlink" title="基本連接"></a>基本連接</h1><h2 id="連接到Node-js"><a href="#連接到Node-js" class="headerlink" title="連接到Node.js"></a>連接到Node.js</h2><p>開一個新資料夾，創一個 <code>index.js</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br><span class="line">npm install mongoose</span><br></pre></td></tr></table></figure>
+
+<p>到儀表版上找到Connect&gt;Connect your application<br><img src="https://i.imgur.com/EAN7fBR.png">  </p>
+<p>點選 <code>Node 2.2.12 or later</code> (一定要) ，你會得到類似這樣的一個字串<br><img src="https://i.imgur.com/5x8vrfz.png">  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodb://tails:&lt;password&gt;@tails-blog-shard-00-00.hurk2.mongodb.net:27017,tails-blog-shard-00-01.hurk2.mongodb.net:27017,tails-blog-shard-00-02.hurk2.mongodb.net:27017/myFirstDatabase?ssl=true&amp;replicaSet=atlas-zdka9q-shard-0&amp;authSource=admin&amp;retryWrites=true&amp;w=majority</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>&lt;password&gt;</code> 必須換成密碼，而myFirstDatabase為資料庫名稱，也可以替換</p>
+<p>這串就相當於資料庫的金鑰，我們叫他MONGO URI</p>
+<p>接著執行這段程式碼，如果你的console有跑出已連接，就代表你成功了!</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">&#x27;mongoose&#x27;</span>);</span><br><span class="line"></span><br><span class="line">mongoose</span><br><span class="line">	.connect(<span class="string">&#x27;YOUR MONGO URI&#x27;</span>, &#123;</span><br><span class="line">		<span class="attr">useNewUrlParser</span>: <span class="literal">true</span>,</span><br><span class="line">		<span class="attr">useUnifiedTopology</span>: <span class="literal">true</span>,</span><br><span class="line">	&#125;)</span><br><span class="line">	.then(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">&#x27;已經連線到資料庫&#x27;</span>);</span><br><span class="line">	&#125;)</span><br><span class="line">	.catch(<span class="function">(<span class="params">err</span>) =&gt;</span> <span class="built_in">console</span>.log(err));</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/Z5MNlum.png">  </p>
+<h2 id="連接到Mongo-Compass"><a href="#連接到Mongo-Compass" class="headerlink" title="連接到Mongo Compass"></a>連接到Mongo Compass</h2><p>Mongo Compass是操作MongoDB的GUI工具，能讓你不用使用指令或程式碼就可以與資料庫互動，等等如果要直接確認程式運行的結果，使用這款軟體會很方便，可以到 <a target="_blank" rel="noopener" href="https://www.mongodb.com/try/download/compass">這裡</a> 下載，另外請務必選擇 <code>1.11 or earlier</code> ，用這個字串才能連接到Compass</p>
+<p><img src="https://i.imgur.com/Ok3pLPg.png" alt="image-20220326204649941"></p>
+<h1 id="資料庫的概念"><a href="#資料庫的概念" class="headerlink" title="資料庫的概念"></a>資料庫的概念</h1><p>在上面我們成功的創建了一個我們的資料庫，在這裡我們將學習如何基本的存取以及修改資料庫</p>
+<h2 id="Database、Collection和Document"><a href="#Database、Collection和Document" class="headerlink" title="Database、Collection和Document"></a>Database、Collection和Document</h2><p><img src="https://i.imgur.com/yjaNYlq.png" alt="img"></p>
+<p>首先我們有一些重要觀念必須先了解，一個MongoDB中允許建立多個Database，而一個Database中可以存放多個Collections，最終在Collection中儲存一個一個的Document。通常我們會連結到某一個Database中，然後在每個Collection中儲存不同的資料。</p>
+<h2 id="Schema與Model"><a href="#Schema與Model" class="headerlink" title="Schema與Model"></a>Schema與Model</h2><p>在MongoDB中，我們會使用model進行互動，而Schema就是定義在該集合(Collection)中Documents的架構，可以用來轉成Model，示例如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> testSchema = <span class="keyword">new</span> mongoose.Schema(&#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="built_in">String</span>, <span class="comment">// 字串</span></span><br><span class="line">    <span class="attr">balance</span>: <span class="built_in">Number</span>, <span class="comment">// 數字</span></span><br><span class="line">    <span class="attr">admin</span>: <span class="built_in">Boolean</span>, <span class="comment">// 布林值</span></span><br><span class="line">    <span class="attr">list</span>: <span class="built_in">Array</span>,  <span class="comment">// 陣列</span></span><br><span class="line">    <span class="attr">inventory</span>: <span class="built_in">Map</span>, <span class="comment">// Map</span></span><br><span class="line">    <span class="attr">somedata</span>: Mixed, <span class="comment">// 不限型別</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>而這裡是可用的Schema Types，其用意是所有值在儲存的時候都會被強制換成這些屬性</p>
+<ul>
+<li>String</li>
+<li>Number</li>
+<li>Date</li>
+<li>Buffer</li>
+<li>Boolean</li>
+<li>Mixed</li>
+<li>ObjectId</li>
+<li>Array</li>
+<li>Decimal128</li>
+<li>Map</li>
+</ul>
+<p>另外在定義Schema時，可以增加Validator(驗證功能)，如果不符合條件將會跑出錯誤訊息，這裡提供幾個常用的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> testSchema = <span class="keyword">new</span> mongoose.Schema(&#123;</span><br><span class="line">    <span class="attr">name</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="built_in">String</span>,</span><br><span class="line">        <span class="attr">required</span>: <span class="literal">true</span>, <span class="comment">// 必要的</span></span><br><span class="line">        <span class="attr">unique</span>: <span class="literal">true</span>, <span class="comment">// 不可重複的</span></span><br><span class="line">        <span class="attr">maxLength</span>: <span class="number">20</span>, <span class="comment">// 字串的最長長度</span></span><br><span class="line">        <span class="attr">minLength</span>: <span class="number">3</span>, <span class="comment">// 字串的最短長度</span></span><br><span class="line">    &#125;, <span class="comment">// 字串</span></span><br><span class="line">    <span class="attr">balance</span>: &#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="built_in">Number</span>,</span><br><span class="line">        <span class="attr">min</span>: <span class="number">2</span>, <span class="comment">// 數字最小值</span></span><br><span class="line">        <span class="attr">max</span>: <span class="number">10</span>, <span class="comment">// 數字最大值</span></span><br><span class="line">    &#125;, <span class="comment">// 數字</span></span><br><span class="line">    <span class="attr">admin</span>: <span class="built_in">Boolean</span>, <span class="comment">// 布林值</span></span><br><span class="line">    <span class="attr">list</span>: <span class="built_in">Array</span>,  <span class="comment">// 陣列</span></span><br><span class="line">    <span class="attr">inventory</span>: <span class="built_in">Map</span>, <span class="comment">// Map</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>最後，要創建Model的話</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Test = mongoose.model(<span class="string">&#x27;Test&#x27;</span>, testSchema);</span><br></pre></td></tr></table></figure>
+
+<h1 id="資料庫的基本操作"><a href="#資料庫的基本操作" class="headerlink" title="資料庫的基本操作"></a>資料庫的基本操作</h1><ul>
+<li>新增<ul>
+<li><a href="#create">create</a></li>
+</ul>
+</li>
+<li>查詢<ul>
+<li>findOne</li>
+<li>find</li>
+</ul>
+</li>
+<li>更新<ul>
+<li>updateOne</li>
+<li>updateMany</li>
+</ul>
+</li>
+<li>刪除<ul>
+<li>deleteOne</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>另外這裡的操作都會需要用到Promise，可以利用async function去執行或是使用.then()</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> Test.updateOne(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;, &#123; <span class="attr">balance</span>: <span class="number">20000</span> &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">fn();</span><br><span class="line"></span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"></span><br><span class="line">Test.updateOne(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;, &#123; <span class="attr">balance</span>: <span class="number">20000</span> &#125;).then(<span class="built_in">console</span>.log);</span><br></pre></td></tr></table></figure>
+
+<h2 id="create"><a href="#create" class="headerlink" title="create"></a>create</h2><p><code>create()</code> 用來插入Document，會回傳插入的該Document</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> Test.create(&#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span>,</span><br><span class="line">    <span class="attr">balance</span>: <span class="number">20000</span>,</span><br><span class="line">    <span class="attr">admin</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">list</span>: [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>],</span><br><span class="line">    <span class="attr">inventory</span>: <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">        [<span class="string">&#x27;car&#x27;</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="string">&#x27;bicycle&#x27;</span>, <span class="number">2</span>],</span><br><span class="line">    ]),</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/6STmppy.png" alt="image-20220327181027072"></p>
+<h2 id="findOne"><a href="#findOne" class="headerlink" title="findOne"></a>findOne</h2><p>會以 <code>Object</code> 型別回傳找到的第一個Document</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> Test.findOne(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> Test.findOne(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span>, <span class="attr">balance</span>: <span class="string">&#x27;10000&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/6bSPuRm.png" alt="image-20220327012134020"></p>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>跟上一個一樣，只是這個能搜尋好多個，但這個以 <code>Array</code> 回傳，裡面有所有符合搜尋條件的 <code>Object</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> Test.find(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> Test.find(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span>, <span class="attr">balance</span>: <span class="string">&#x27;10000&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/wFxhjIp.png" alt="image-20220327013748182"></p>
+<h2 id="updateOne"><a href="#updateOne" class="headerlink" title="updateOne"></a>updateOne</h2><p>顧名思義，就是更新依照條件找到的第一個Document，但不會回傳結果，如果要回傳結果，要用 <a href="#findOneAndUpdate">findOneAndUpdate</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> Test.updateOne(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;, &#123;</span><br><span class="line">        <span class="attr">balance</span>: <span class="number">30000</span>,</span><br><span class="line">        <span class="attr">admin</span>: <span class="literal">false</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 找尋第一個name符合&#x27;Test&#x27;的值，將其balance與admin更新</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="updateMany"><a href="#updateMany" class="headerlink" title="updateMany"></a>updateMany</h2><p>同上概念，但這次是更新依照條件找到的所有Document，也不會回傳結果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> Test.updateMany(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;, &#123;</span><br><span class="line">        <span class="attr">balance</span>: <span class="number">30000</span>,</span><br><span class="line">        <span class="attr">admin</span>: <span class="literal">false</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="deleteOne"><a href="#deleteOne" class="headerlink" title="deleteOne"></a>deleteOne</h2><p>找到第一個符合條件的之後會刪除該Document，不會回傳結果，如果要回傳結果，要用 <a href="#findOneAndDelete">findOneAndDelete</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> Test.deleteOne(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> Test.deleteOne(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span>, <span class="attr">balance</span>: <span class="string">&#x27;10000&#x27;</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="deleteMany"><a href="#deleteMany" class="headerlink" title="deleteMany"></a>deleteMany</h2><p>基本上findOne與deleteOne相對於find與deleteMany，前者是第一個值，後者是全部</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> Test.find(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> Test.find(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span>, <span class="attr">balance</span>: <span class="string">&#x27;10000&#x27;</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="findOneAndUpdate"><a href="#findOneAndUpdate" class="headerlink" title="findOneAndUpdate"></a>findOneAndUpdate</h2><p>跟updateOne一樣，但會回傳 <strong>更新前的值</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> Test.findOneAndUpdate(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;, &#123;</span><br><span class="line">        <span class="attr">balance</span>: <span class="number">30000</span>,</span><br><span class="line">        <span class="attr">admin</span>: <span class="literal">false</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/zyr4p1e.png" alt="image-20220327191607935"></p>
+<h2 id="findOneAndDelete"><a href="#findOneAndDelete" class="headerlink" title="findOneAndDelete"></a>findOneAndDelete</h2><p>跟deleteOne一樣，但會回傳值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> Test.findOneAndDelete(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> res = <span class="keyword">await</span> Test.findOneAndDelete(&#123; <span class="attr">name</span>: <span class="string">&#x27;Test&#x27;</span>, <span class="attr">balance</span>: <span class="string">&#x27;10000&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/vlGJOSb.png" alt="image-20220327181400084"></p>
+<h1 id="進階Aggregation使用方法"><a href="#進階Aggregation使用方法" class="headerlink" title="進階Aggregation使用方法"></a>進階Aggregation使用方法</h1><p>這個是一次處理所有數據並輸出的方法，簡單來說，就是「資料處理」，事實上呢，一次find()所有數據到客戶端，然後再用js的函式處理也是可以的，但這樣的效率較差，而在server端就已經做好可以優化效率，以下介紹幾種簡單的aggregate方法</p>
+<p>以下我們將用此資料做示範:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;512bc95fe835e68f199c8686&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;dave&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">80</span>, <span class="string">&quot;views&quot;</span> : <span class="number">100</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;512bc962e835e68f199c8687&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;dave&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">85</span>, <span class="string">&quot;views&quot;</span> : <span class="number">521</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;55f5a192d4bede9ac365b257&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;ahn&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">60</span>, <span class="string">&quot;views&quot;</span> : <span class="number">1000</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;55f5a192d4bede9ac365b258&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;li&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">55</span>, <span class="string">&quot;views&quot;</span> : <span class="number">5000</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;55f5a1d3d4bede9ac365b259&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;annT&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">60</span>, <span class="string">&quot;views&quot;</span> : <span class="number">50</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;55f5a1d3d4bede9ac365b25a&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;li&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">94</span>, <span class="string">&quot;views&quot;</span> : <span class="number">999</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;55f5a1d3d4bede9ac365b25b&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;ty&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">95</span>, <span class="string">&quot;views&quot;</span> : <span class="number">1000</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="match"><a href="#match" class="headerlink" title="$match"></a>$match</h2><p>這是 <code>$match</code> 的方法，可以依照條件篩選結果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = model.aggregate([</span><br><span class="line">    &#123; <span class="attr">$match</span> : &#123; <span class="attr">author</span> : <span class="string">&quot;dave&quot;</span> &#125; &#125;,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p>回傳結果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;512bc95fe835e68f199c8686&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;dave&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">80</span>, <span class="string">&quot;views&quot;</span> : <span class="number">100</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;512bc962e835e68f199c8687&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;dave&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">85</span>, <span class="string">&quot;views&quot;</span> : <span class="number">521</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="limit"><a href="#limit" class="headerlink" title="$limit"></a>$limit</h2><p><code>$limit</code> 可以限制輸出，也就是在server端處理好資料之後，會限制輸出到客戶端的數量</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = model.aggregate([</span><br><span class="line">    &#123; <span class="attr">$match</span> : &#123; <span class="attr">author</span> : <span class="string">&quot;dave&quot;</span> &#125; &#125;,</span><br><span class="line">    &#123; <span class="attr">$limit</span>: <span class="number">1</span> &#125;,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p>回傳結果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;512bc95fe835e68f199c8686&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;dave&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">80</span>, <span class="string">&quot;views&quot;</span> : <span class="number">100</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="skip"><a href="#skip" class="headerlink" title="$skip"></a>$skip</h2><p><code>$skip</code> 則是決定輸出時要先跳過幾個資料</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = model.aggregate([</span><br><span class="line">    &#123; <span class="attr">$match</span> : &#123; <span class="attr">author</span> : <span class="string">&quot;dave&quot;</span> &#125; &#125;,</span><br><span class="line">    &#123; <span class="attr">skip</span>: <span class="number">1</span> &#125;,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p>回傳結果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;512bc962e835e68f199c8687&quot;</span>), <span class="string">&quot;author&quot;</span> : <span class="string">&quot;dave&quot;</span>, <span class="string">&quot;score&quot;</span> : <span class="number">85</span>, <span class="string">&quot;views&quot;</span> : <span class="number">521</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="project"><a href="#project" class="headerlink" title="$project"></a>$project</h2><p><code>$project</code> 可以重組資料</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = model.aggregate([</span><br><span class="line">    &#123; <span class="attr">$project</span> : &#123;</span><br><span class="line">        <span class="attr">author</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">score</span>: <span class="number">1</span>,</span><br><span class="line">    &#125;&#125;,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<p>回傳結果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">_id</span>: ObjectId(<span class="string">&quot;512bc95fe835e68f199c8686&quot;</span>), <span class="attr">author</span>: <span class="string">&#x27;dave&#x27;</span>, <span class="attr">score</span>: <span class="number">80</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: ObjectId(<span class="string">&quot;512bc962e835e68f199c8687&quot;</span>), <span class="attr">author</span>: <span class="string">&#x27;dave&#x27;</span>, <span class="attr">score</span>: <span class="number">85</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: ObjectId(<span class="string">&quot;55f5a192d4bede9ac365b257&quot;</span>), <span class="attr">author</span>: <span class="string">&#x27;ahn&#x27;</span>, <span class="attr">score</span>: <span class="number">60</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: ObjectId(<span class="string">&quot;55f5a192d4bede9ac365b258&quot;</span>), <span class="attr">author</span>: <span class="string">&#x27;li&#x27;</span>, <span class="attr">score</span>: <span class="number">55</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: ObjectId(<span class="string">&quot;55f5a1d3d4bede9ac365b259&quot;</span>), <span class="attr">author</span>: <span class="string">&#x27;annT&#x27;</span>, <span class="attr">score</span>: <span class="number">60</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: ObjectId(<span class="string">&quot;55f5a1d3d4bede9ac365b25a&quot;</span>), <span class="attr">author</span>: <span class="string">&#x27;li&#x27;</span>, <span class="attr">score</span>: <span class="number">94</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: ObjectId(<span class="string">&quot;55f5a1d3d4bede9ac365b25b&quot;</span>), <span class="attr">author</span>: <span class="string">&#x27;ty&#x27;</span>, <span class="attr">score</span>: <span class="number">95</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>你可能發現了一點就是他還有_id，因為這是會預設加上的，不過寫成這樣就能解決</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> res = model.aggregate([</span><br><span class="line">    &#123; <span class="attr">$project</span> : &#123;</span><br><span class="line">        <span class="attr">_id</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="attr">author</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="attr">score</span>: <span class="number">1</span>,</span><br><span class="line">    &#125;&#125;,</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(res);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">author</span>: <span class="string">&#x27;dave&#x27;</span>, <span class="attr">score</span>: <span class="number">80</span> &#125;</span><br><span class="line">&#123; <span class="attr">author</span>: <span class="string">&#x27;dave&#x27;</span>, <span class="attr">score</span>: <span class="number">85</span> &#125;</span><br><span class="line">&#123; <span class="attr">author</span>: <span class="string">&#x27;ahn&#x27;</span>, <span class="attr">score</span>: <span class="number">60</span> &#125;</span><br><span class="line">&#123; <span class="attr">author</span>: <span class="string">&#x27;li&#x27;</span>, <span class="attr">score</span>: <span class="number">55</span> &#125;</span><br><span class="line">&#123; <span class="attr">author</span>: <span class="string">&#x27;annT&#x27;</span>, <span class="attr">score</span>: <span class="number">60</span> &#125;</span><br><span class="line">&#123; <span class="attr">author</span>: <span class="string">&#x27;li&#x27;</span>, <span class="attr">score</span>: <span class="number">94</span> &#125;</span><br><span class="line">&#123; <span class="attr">author</span>: <span class="string">&#x27;ty&#x27;</span>, <span class="attr">score</span>: <span class="number">95</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="group"><a href="#group" class="headerlink" title="$group"></a>$group</h2><p>這裡我們將用這個資料</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">1</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;price&quot;</span> : NumberDecimal(<span class="string">&quot;10&quot;</span>), <span class="string">&quot;quantity&quot;</span> : NumberInt(<span class="string">&quot;2&quot;</span>), <span class="string">&quot;date&quot;</span> : ISODate(<span class="string">&quot;2014-03-01T08:00:00Z&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">2</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;jkl&quot;</span>, <span class="string">&quot;price&quot;</span> : NumberDecimal(<span class="string">&quot;20&quot;</span>), <span class="string">&quot;quantity&quot;</span> : NumberInt(<span class="string">&quot;1&quot;</span>), <span class="string">&quot;date&quot;</span> : ISODate(<span class="string">&quot;2014-03-01T09:00:00Z&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">3</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;xyz&quot;</span>, <span class="string">&quot;price&quot;</span> : NumberDecimal(<span class="string">&quot;5&quot;</span>), <span class="string">&quot;quantity&quot;</span> : NumberInt( <span class="string">&quot;10&quot;</span>), <span class="string">&quot;date&quot;</span> : ISODate(<span class="string">&quot;2014-03-15T09:00:00Z&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">4</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;xyz&quot;</span>, <span class="string">&quot;price&quot;</span> : NumberDecimal(<span class="string">&quot;5&quot;</span>), <span class="string">&quot;quantity&quot;</span> :  NumberInt(<span class="string">&quot;20&quot;</span>) , <span class="string">&quot;date&quot;</span> : ISODate(<span class="string">&quot;2014-04-04T11:21:39.736Z&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">5</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;price&quot;</span> : NumberDecimal(<span class="string">&quot;10&quot;</span>), <span class="string">&quot;quantity&quot;</span> : NumberInt(<span class="string">&quot;10&quot;</span>) , <span class="string">&quot;date&quot;</span> : ISODate(<span class="string">&quot;2014-04-04T21:23:13.331Z&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">6</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;def&quot;</span>, <span class="string">&quot;price&quot;</span> : NumberDecimal(<span class="string">&quot;7.5&quot;</span>), <span class="string">&quot;quantity&quot;</span>: NumberInt(<span class="string">&quot;5&quot;</span> ) , <span class="string">&quot;date&quot;</span> : ISODate(<span class="string">&quot;2015-06-04T05:08:13Z&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">7</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;def&quot;</span>, <span class="string">&quot;price&quot;</span> : NumberDecimal(<span class="string">&quot;7.5&quot;</span>), <span class="string">&quot;quantity&quot;</span>: NumberInt(<span class="string">&quot;10&quot;</span>) , <span class="string">&quot;date&quot;</span> : ISODate(<span class="string">&quot;2015-09-10T08:43:00Z&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">8</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;abc&quot;</span>, <span class="string">&quot;price&quot;</span> : NumberDecimal(<span class="string">&quot;10&quot;</span>), <span class="string">&quot;quantity&quot;</span> : NumberInt(<span class="string">&quot;5&quot;</span> ) , <span class="string">&quot;date&quot;</span> : ISODate(<span class="string">&quot;2016-02-06T20:20:13Z&quot;</span>) &#125;</span><br></pre></td></tr></table></figure>
+
+<p>利用以下的操作</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">model.aggregate([</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">$group</span>: &#123;</span><br><span class="line">       <span class="attr">_id</span>: <span class="string">&#x27;$item&#x27;</span>,</span><br><span class="line">       <span class="attr">sum</span>: &#123; <span class="attr">$sum</span>: <span class="string">&#x27;$price&#x27;</span> &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<p>會得到</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">_id</span>: <span class="string">&#x27;xyz&#x27;</span>, <span class="attr">sum</span>: Decimal128(<span class="string">&quot;10&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="string">&#x27;jkl&#x27;</span>, <span class="attr">sum</span>: Decimal128(<span class="string">&quot;20&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="string">&#x27;abc&#x27;</span>, <span class="attr">sum</span>: Decimal128(<span class="string">&quot;30&quot;</span>) &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="string">&#x27;def&#x27;</span>, <span class="attr">sum</span>: Decimal128(<span class="string">&quot;15.0&quot;</span>) &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>$group</code> 中一定要先定義一項資料為 <code>_id</code> ，所有同樣 <code>_id</code> 的資料都會被合在一起，下面是這裡常用的運算符，這裡就不慢慢細講，網路上很多資源</p>
+<ul>
+<li><code>$sum</code></li>
+<li><code>$push</code></li>
+<li><code>$min</code></li>
+<li><code>$max</code></li>
+<li><code>$count</code></li>
+<li><code>$avg</code></li>
+</ul>
+<h2 id="unwind"><a href="#unwind" class="headerlink" title="$unwind"></a>$unwind</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">1</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;ABC1&quot;</span>, <span class="attr">sizes</span>: [ <span class="string">&quot;S&quot;</span>, <span class="string">&quot;M&quot;</span>, <span class="string">&quot;L&quot;</span>] &#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model.aggregate( [ &#123; <span class="attr">$unwind</span> : <span class="string">&quot;$sizes&quot;</span> &#125; ] );</span><br></pre></td></tr></table></figure>
+
+<p>會輸出</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">1</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;ABC1&quot;</span>, <span class="string">&quot;sizes&quot;</span> : <span class="string">&quot;S&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">1</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;ABC1&quot;</span>, <span class="string">&quot;sizes&quot;</span> : <span class="string">&quot;M&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">1</span>, <span class="string">&quot;item&quot;</span> : <span class="string">&quot;ABC1&quot;</span>, <span class="string">&quot;sizes&quot;</span> : <span class="string">&quot;L&quot;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>這裡Array成功被拆分為多個文件</p>
+<h2 id="sort"><a href="#sort" class="headerlink" title="$sort"></a>$sort</h2><p>顧名思義他可以排序，這裡有一些資料:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">1</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Central Park Cafe&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Manhattan&quot;</span>&#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">2</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Rock A Feller Bar and Grill&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Queens&quot;</span>&#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">3</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Empire State Pub&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Brooklyn&quot;</span>&#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">4</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Stan&#x27;s Pizzaria&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Manhattan&quot;</span>&#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">5</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Jane&#x27;s Deli&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Brooklyn&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model.aggregate(</span><br><span class="line">   [</span><br><span class="line">     &#123; <span class="attr">$sort</span> : &#123; <span class="attr">borough</span> : <span class="number">1</span>, <span class="attr">_id</span>: <span class="number">1</span> &#125; &#125;,</span><br><span class="line">   ]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>會輸出</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">3</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Empire State Pub&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Brooklyn&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">5</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Jane&#x27;s Deli&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Brooklyn&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">1</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Central Park Cafe&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Manhattan&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">4</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Stan&#x27;s Pizzaria&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Manhattan&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="number">2</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;Rock A Feller Bar and Grill&quot;</span>, <span class="string">&quot;borough&quot;</span> : <span class="string">&quot;Queens&quot;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先他會依照borough進行排序，再來再依據 <code>_id</code> 排 (當borough同排名時) ，另外1是升序(由小排到大)，-1是降序(由大排到小)</p>
+<h2 id="綜合練習"><a href="#綜合練習" class="headerlink" title="綜合練習"></a>綜合練習</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">_id</span>: <span class="number">1</span>, <span class="attr">cust_id</span>: <span class="string">&quot;abc1&quot;</span>, <span class="attr">ord_date</span>: ISODate(<span class="string">&quot;2012-11-02T17:04:11.102Z&quot;</span>), <span class="attr">status</span>: <span class="string">&quot;A&quot;</span>, <span class="attr">amount</span>: <span class="number">50</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="number">2</span>, <span class="attr">cust_id</span>: <span class="string">&quot;xyz1&quot;</span>, <span class="attr">ord_date</span>: ISODate(<span class="string">&quot;2013-10-01T17:04:11.102Z&quot;</span>), <span class="attr">status</span>: <span class="string">&quot;A&quot;</span>, <span class="attr">amount</span>: <span class="number">100</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="number">3</span>, <span class="attr">cust_id</span>: <span class="string">&quot;xyz1&quot;</span>, <span class="attr">ord_date</span>: ISODate(<span class="string">&quot;2013-10-12T17:04:11.102Z&quot;</span>), <span class="attr">status</span>: <span class="string">&quot;D&quot;</span>, <span class="attr">amount</span>: <span class="number">25</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="number">4</span>, <span class="attr">cust_id</span>: <span class="string">&quot;xyz1&quot;</span>, <span class="attr">ord_date</span>: ISODate(<span class="string">&quot;2013-10-11T17:04:11.102Z&quot;</span>), <span class="attr">status</span>: <span class="string">&quot;D&quot;</span>, <span class="attr">amount</span>: <span class="number">125</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="number">5</span>, <span class="attr">cust_id</span>: <span class="string">&quot;abc1&quot;</span>, <span class="attr">ord_date</span>: ISODate(<span class="string">&quot;2013-11-12T17:04:11.102Z&quot;</span>), <span class="attr">status</span>: <span class="string">&quot;A&quot;</span>, <span class="attr">amount</span>: <span class="number">25</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>這次我們將一次進行好幾次的資料處理(請看注釋)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">model.aggregate([</span><br><span class="line">    &#123; <span class="attr">$match</span>: &#123; <span class="attr">status</span>: <span class="string">&quot;A&quot;</span> &#125; &#125;, <span class="comment">// 篩選出所有status符合&quot;A&quot;的</span></span><br><span class="line">    &#123; <span class="attr">$group</span>: &#123; <span class="attr">_id</span>: <span class="string">&quot;$cust_id&quot;</span>, <span class="attr">total</span>: &#123; <span class="attr">$sum</span>: <span class="string">&quot;$amount&quot;</span> &#125; &#125; &#125;, <span class="comment">// 將_id設為原cust_id，並且將相同cust_id的總和設為total</span></span><br><span class="line">    &#123; <span class="attr">$sort</span>: &#123; <span class="attr">total</span>: -<span class="number">1</span> &#125; &#125; <span class="comment">// 降序排列total</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<p>所以依照步驟拆解為</p>
+<p><code>$match</code> 後</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">_id</span>: <span class="number">1</span>, <span class="attr">cust_id</span>: <span class="string">&#x27;abc1&#x27;</span>, <span class="attr">ord_date</span>: <span class="number">2012</span>-<span class="number">11</span>-02T17:<span class="number">04</span>:<span class="number">11.</span>102Z, <span class="attr">status</span>: <span class="string">&#x27;A&#x27;</span>, <span class="attr">amount</span>: <span class="number">50</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="number">2</span>, <span class="attr">cust_id</span>: <span class="string">&#x27;xyz1&#x27;</span>, <span class="attr">ord_date</span>: <span class="number">2013</span>-<span class="number">10</span>-01T17:<span class="number">04</span>:<span class="number">11.</span>102Z, <span class="attr">status</span>: <span class="string">&#x27;A&#x27;</span>, <span class="attr">amount</span>: <span class="number">100</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="number">5</span>, <span class="attr">cust_id</span>: <span class="string">&#x27;abc1&#x27;</span>,  <span class="attr">ord_date</span>: <span class="number">2013</span>-<span class="number">11</span>-12T17:<span class="number">04</span>:<span class="number">11.</span>102Z, <span class="attr">status</span>: <span class="string">&#x27;A&#x27;</span>, <span class="attr">amount</span>: <span class="number">25</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>$group</code> 後</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">_id</span>: <span class="string">&#x27;abc1&#x27;</span>, <span class="attr">total</span>: <span class="number">75</span> &#125;</span><br><span class="line">&#123; <span class="attr">_id</span>: <span class="string">&#x27;xyz1&#x27;</span>, <span class="attr">total</span>: <span class="number">100</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>$sort</code> 後</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="string">&quot;xyz1&quot;</span>, <span class="string">&quot;total&quot;</span> : <span class="number">100</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : <span class="string">&quot;abc1&quot;</span>, <span class="string">&quot;total&quot;</span> : <span class="number">75</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="結尾"><a href="#結尾" class="headerlink" title="結尾"></a>結尾</h1><p>以上是使用Node.js操作MongoDB的教學，當然MongoDB內建的功能實在太多了，基本上上面的教學已經足夠大部分的處理，但如果想深入研究，可以到 <a target="_blank" rel="noopener" href="https://mongoosejs.com/docs/guide.html">Docs</a> 查看更多詳細說明 </p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>作者： </strong>Tails
+  </li>
+  <li class="post-copyright-link">
+    <strong>文章連結：</strong>
+    <a href="https://tailsblog.tk/2022-03-25-01/" title="【Node.js】MongoDB資料庫操作教學">https://tailsblog.tk/2022-03-25-01/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022-03-22-01/" rel="prev" title="【Discord.js】製作無資料庫Snipe指令的方法">
+      <i class="fa fa-chevron-left"></i> 【Discord.js】製作無資料庫Snipe指令的方法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%B5%E5%BB%BAMongoDB%E8%B3%87%E6%96%99%E5%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">創建MongoDB資料庫</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%80%A3%E6%8E%A5"><span class="nav-number">2.</span> <span class="nav-text">基本連接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%A3%E6%8E%A5%E5%88%B0Node-js"><span class="nav-number">2.1.</span> <span class="nav-text">連接到Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%A3%E6%8E%A5%E5%88%B0Mongo-Compass"><span class="nav-number">2.2.</span> <span class="nav-text">連接到Mongo Compass</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">3.</span> <span class="nav-text">資料庫的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Database%E3%80%81Collection%E5%92%8CDocument"><span class="nav-number">3.1.</span> <span class="nav-text">Database、Collection和Document</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Schema%E8%88%87Model"><span class="nav-number">3.2.</span> <span class="nav-text">Schema與Model</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B3%87%E6%96%99%E5%BA%AB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">資料庫的基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#create"><span class="nav-number">4.1.</span> <span class="nav-text">create</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#findOne"><span class="nav-number">4.2.</span> <span class="nav-text">findOne</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">4.3.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#updateOne"><span class="nav-number">4.4.</span> <span class="nav-text">updateOne</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#updateMany"><span class="nav-number">4.5.</span> <span class="nav-text">updateMany</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deleteOne"><span class="nav-number">4.6.</span> <span class="nav-text">deleteOne</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deleteMany"><span class="nav-number">4.7.</span> <span class="nav-text">deleteMany</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#findOneAndUpdate"><span class="nav-number">4.8.</span> <span class="nav-text">findOneAndUpdate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#findOneAndDelete"><span class="nav-number">4.9.</span> <span class="nav-text">findOneAndDelete</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%B2%E9%9A%8EAggregation%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">進階Aggregation使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#match"><span class="nav-number">5.1.</span> <span class="nav-text">$match</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#limit"><span class="nav-number">5.2.</span> <span class="nav-text">$limit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#skip"><span class="nav-number">5.3.</span> <span class="nav-text">$skip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#project"><span class="nav-number">5.4.</span> <span class="nav-text">$project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#group"><span class="nav-number">5.5.</span> <span class="nav-text">$group</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unwind"><span class="nav-number">5.6.</span> <span class="nav-text">$unwind</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sort"><span class="nav-number">5.7.</span> <span class="nav-text">$sort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B6%9C%E5%90%88%E7%B7%B4%E7%BF%92"><span class="nav-number">5.8.</span> <span class="nav-text">綜合練習</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B5%90%E5%B0%BE"><span class="nav-number">6.</span> <span class="nav-text">結尾</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Tails"
+      src="https://i.imgur.com/MTWQbeh.png">
+  <p class="site-author-name" itemprop="name">Tails</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="author" itemprop="copyrightHolder">By Tails</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">總字數：</span>
+    <span title="總字數">3k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">所需總閱讀時間 &asymp;</span>
+    <span title="所需總閱讀時間">34 分鐘</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e5149df7037734f108df',
+      clientSecret: '814c0fdc6851e49a53adbb007fa0ba331ee52f09',
+      repo        : 'blog-comments',
+      owner       : 'PikachuTW',
+      admin       : ['PikachuTW'],
+      id          : '072d95299442fa272022df01d7c564be',
+        language: 'zh-TW',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
