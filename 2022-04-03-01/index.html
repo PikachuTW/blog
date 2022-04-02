@@ -29,20 +29,24 @@
 
   gtag('config', 'G-N7YKSG3GNF');
 </script>
-  <meta name="description" content="這篇我們將用我在Github上的 Command handler 作為範例進行教學，成果程式碼會放在結尾">
+  <meta name="description" content="這篇簡略介紹一下更新Node.js的方法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Discord.js】製作無資料庫Snipe指令的方法">
-<meta property="og:url" content="https://tailsblog.tk/2022-03-22-01/">
+<meta property="og:title" content="【Node.js】在Windows與Linux快速更新Node.js的方法">
+<meta property="og:url" content="https://tailsblog.tk/2022-04-03-01/">
 <meta property="og:site_name" content="Tails 的開發筆記">
-<meta property="og:description" content="這篇我們將用我在Github上的 Command handler 作為範例進行教學，成果程式碼會放在結尾">
+<meta property="og:description" content="這篇簡略介紹一下更新Node.js的方法">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2022-03-22T07:08:32.000Z">
-<meta property="article:modified_time" content="2022-03-22T17:29:14.932Z">
+<meta property="og:image" content="https://i.imgur.com/Hm7yfAd.png">
+<meta property="og:image" content="https://i.imgur.com/CAp4vzA.png">
+<meta property="og:image" content="https://i.imgur.com/GzTu4Og.png">
+<meta property="article:published_time" content="2022-04-02T16:25:32.000Z">
+<meta property="article:modified_time" content="2022-04-02T16:39:12.827Z">
 <meta property="article:author" content="Tails">
-<meta property="article:tag" content="Discord.js">
+<meta property="article:tag" content="Node.js">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/Hm7yfAd.png">
 
-<link rel="canonical" href="https://tailsblog.tk/2022-03-22-01/">
+<link rel="canonical" href="https://tailsblog.tk/2022-04-03-01/">
 
 
 <script id="page-configurations">
@@ -55,7 +59,7 @@
   };
 </script>
 
-  <title>【Discord.js】製作無資料庫Snipe指令的方法 | Tails 的開發筆記</title>
+  <title>【Node.js】在Windows與Linux快速更新Node.js的方法 | Tails 的開發筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7YKSG3GNF"></script>
     <script>
@@ -166,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://tailsblog.tk/2022-03-22-01/">
+    <link itemprop="mainEntityOfPage" href="https://tailsblog.tk/2022-04-03-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.imgur.com/MTWQbeh.png">
@@ -179,7 +183,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Discord.js】製作無資料庫Snipe指令的方法
+          【Node.js】在Windows與Linux快速更新Node.js的方法
         </h1>
 
         <div class="post-meta">
@@ -189,7 +193,7 @@
               </span>
               <span class="post-meta-item-text">發表於</span>
 
-              <time title="創建時間：2022-03-22 15:08:32" itemprop="dateCreated datePublished" datetime="2022-03-22T15:08:32+08:00">2022-03-22</time>
+              <time title="創建時間：2022-04-03 00:25:32" itemprop="dateCreated datePublished" datetime="2022-04-03T00:25:32+08:00">2022-04-03</time>
             </span>
 
           
@@ -198,7 +202,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>168</span>
+              <span>145</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
@@ -217,16 +221,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>這篇我們將用我在Github上的 <a target="_blank" rel="noopener" href="https://github.com/PikachuTW/Discord.js-v13-Command-Handler">Command handler</a> 作為範例進行教學，成果程式碼會放在結尾</p>
+        <p>這篇簡略介紹一下更新Node.js的方法</p>
 <span id="more"></span>
 
-<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>其實不需要Database儲存資料的方式很簡單，在client中放一個Map去存即可，不過這裡我們將用Discord.js裡特有的 <a target="_blank" rel="noopener" href="https://discord.js.org/#/docs/collection/stable/class/Collection">Collection資料型態</a></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">const</span> snipeData = <span class="keyword">new</span> Collection();</span><br><span class="line"></span><br><span class="line">client.container = &#123;</span><br><span class="line">    snipeData,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><p>進到 <a target="_blank" rel="noopener" href="https://nodejs.org/en/download/current/">官方下載頁</a> ，直接下載安裝檔進行安裝就會自動更新了</p>
+<p><img src="https://i.imgur.com/Hm7yfAd.png" alt="image-20220403003321129"></p>
+<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><p>其實這篇主要是想講Linux，要更新我們會使用指令，<a target="_blank" rel="noopener" href="https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions">這裡是指令頁面</a></p>
+<p><img src="https://i.imgur.com/CAp4vzA.png" alt="image-20220403003600485"></p>
+<p>例如 Node v17 的下載指令為</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
 
-<p>如果要在指令或是event中存取這個snipeData時</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在messageDelete中更新資料</span></span><br><span class="line">client.container.snipeData.set(message.channel.id, &#123;</span><br><span class="line">    <span class="attr">msg</span>: message.content,</span><br><span class="line">    <span class="attr">author</span>: message.author.id,</span><br><span class="line">    <span class="attr">time</span>: <span class="keyword">new</span> <span class="built_in">Date</span>(message.createdTimestamp).toLocaleString(<span class="string">&#x27;zh-TW&#x27;</span>, &#123; <span class="attr">timeZone</span>: <span class="string">&#x27;Asia/Taipei&#x27;</span> &#125;),</span><br><span class="line">    <span class="attr">att</span>: message.attachments.first() ? message.attachments.first().proxyURL : <span class="literal">null</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在Snipe指令存取資料</span></span><br><span class="line"><span class="keyword">const</span> data = client.container.snipeData.get(message.channel.id);</span><br></pre></td></tr></table></figure>
+<h1 id="查詢Node-js版本"><a href="#查詢Node-js版本" class="headerlink" title="查詢Node.js版本"></a>查詢Node.js版本</h1><p>要查詢版本，我們會用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure>
 
-<h1 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h1><p><a target="_blank" rel="noopener" href="https://github.com/PikachuTW/Blog-Example/tree/main/20220322%20%E8%A3%BD%E4%BD%9C%E7%84%A1%E8%B3%87%E6%96%99%E5%BA%ABSnipe%E6%8C%87%E4%BB%A4%E7%9A%84%E6%96%B9%E6%B3%95">程式碼在這裡</a></p>
+<p>這在Windows或Linux都適用</p>
+<p><img src="https://i.imgur.com/GzTu4Og.png" alt="image-20220403003812764"></p>
 
     </div>
 
@@ -242,7 +251,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>文章連結：</strong>
-    <a href="https://tailsblog.tk/2022-03-22-01/" title="【Discord.js】製作無資料庫Snipe指令的方法">https://tailsblog.tk/2022-03-22-01/</a>
+    <a href="https://tailsblog.tk/2022-04-03-01/" title="【Node.js】在Windows與Linux快速更新Node.js的方法">https://tailsblog.tk/2022-04-03-01/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 許可協議。轉載請註明出處！
@@ -254,7 +263,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/Discord-js/" rel="tag"><i class="fa fa-tag"></i> Discord.js</a>
+              <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
           </div>
 
         
@@ -262,11 +271,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2022-03-25-01/" rel="next" title="【Node.js】MongoDB資料庫操作教學">
-      【Node.js】MongoDB資料庫操作教學 <i class="fa fa-chevron-right"></i>
+    <a href="/2022-03-25-01/" rel="prev" title="【Node.js】MongoDB資料庫操作教學">
+      <i class="fa fa-chevron-left"></i> 【Node.js】MongoDB資料庫操作教學
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -326,7 +335,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">實作</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows"><span class="nav-number">1.</span> <span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux"><span class="nav-number">2.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E8%A9%A2Node-js%E7%89%88%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">查詢Node.js版本</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -456,7 +465,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'blog-comments',
       owner       : 'PikachuTW',
       admin       : ['PikachuTW'],
-      id          : '550171c03fb11a168e0d9d55f4659fa4',
+      id          : 'e809c07a6c9e4819a1b63a3c45bb79a9',
         language: 'zh-TW',
       distractionFreeMode: false
     });
