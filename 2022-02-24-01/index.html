@@ -29,24 +29,22 @@
 
   gtag('config', 'G-N7YKSG3GNF');
 </script>
-  <meta name="description" content="這篇簡略介紹一下更新Node.js的方法">
+  <meta name="description" content="上一篇我講解了如何讓一個機器人動起來，但就只能做簡單的回覆而已，這篇將說明其他的基本指令程式碼 機器人編寫的基本概念基本邏輯Discord機器人的本質就是收到事件&#x3D;&gt;然後執行一個動作，在這樣簡單的邏輯之下能利用你的創造力搭配各種Package寫出各式各樣的指令。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Node.js】在Windows與Linux快速更新Node.js的方法">
-<meta property="og:url" content="https://pikachutw.github.io/blog/2022-04-03-01/">
+<meta property="og:title" content="【從零開始的Discord.js生活】(二) Discord.js基本架構講解">
+<meta property="og:url" content="https://pikachutw.github.io/blog/2022-02-24-01/">
 <meta property="og:site_name" content="Tails 的開發筆記">
-<meta property="og:description" content="這篇簡略介紹一下更新Node.js的方法">
+<meta property="og:description" content="上一篇我講解了如何讓一個機器人動起來，但就只能做簡單的回覆而已，這篇將說明其他的基本指令程式碼 機器人編寫的基本概念基本邏輯Discord機器人的本質就是收到事件&#x3D;&gt;然後執行一個動作，在這樣簡單的邏輯之下能利用你的創造力搭配各種Package寫出各式各樣的指令。">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://i.imgur.com/Hm7yfAd.png">
-<meta property="og:image" content="https://i.imgur.com/CAp4vzA.png">
-<meta property="og:image" content="https://i.imgur.com/GzTu4Og.png">
-<meta property="article:published_time" content="2022-04-02T16:25:32.000Z">
-<meta property="article:modified_time" content="2022-04-02T16:39:12.827Z">
+<meta property="og:image" content="https://i.imgur.com/p01t9km.png">
+<meta property="og:image" content="https://i.imgur.com/nxQ53D4.png">
+<meta property="article:published_time" content="2022-02-24T12:12:25.000Z">
+<meta property="article:modified_time" content="2024-03-31T02:26:56.625Z">
 <meta property="article:author" content="Tails">
-<meta property="article:tag" content="Node.js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/Hm7yfAd.png">
+<meta name="twitter:image" content="https://i.imgur.com/p01t9km.png">
 
-<link rel="canonical" href="https://pikachutw.github.io/blog/2022-04-03-01/">
+<link rel="canonical" href="https://pikachutw.github.io/blog/2022-02-24-01/">
 
 
 <script id="page-configurations">
@@ -59,7 +57,7 @@
   };
 </script>
 
-  <title>【Node.js】在Windows與Linux快速更新Node.js的方法 | Tails 的開發筆記</title>
+  <title>【從零開始的Discord.js生活】(二) Discord.js基本架構講解 | Tails 的開發筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7YKSG3GNF"></script>
     <script>
@@ -170,7 +168,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://pikachutw.github.io/blog/2022-04-03-01/">
+    <link itemprop="mainEntityOfPage" href="https://pikachutw.github.io/blog/2022-02-24-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://i.imgur.com/MTWQbeh.png">
@@ -183,7 +181,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Node.js】在Windows與Linux快速更新Node.js的方法
+          【從零開始的Discord.js生活】(二) Discord.js基本架構講解
         </h1>
 
         <div class="post-meta">
@@ -193,7 +191,7 @@
               </span>
               <span class="post-meta-item-text">發表於</span>
 
-              <time title="創建時間：2022-04-03 00:25:32" itemprop="dateCreated datePublished" datetime="2022-04-03T00:25:32+08:00">2022-04-03</time>
+              <time title="創建時間：2022-02-24 20:12:25" itemprop="dateCreated datePublished" datetime="2022-02-24T20:12:25+08:00">2022-02-24</time>
             </span>
 
           
@@ -202,14 +200,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">文章字數：</span>
-              <span>145</span>
+              <span>550</span>
             </span>
             <span class="post-meta-item" title="所需閱讀時間">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">所需閱讀時間 &asymp;</span>
-              <span>2 分鐘</span>
+              <span>7 分鐘</span>
             </span>
 
         </div>
@@ -221,21 +219,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>這篇簡略介紹一下更新Node.js的方法</p>
+        <p>上一篇我講解了如何讓一個機器人動起來，但就只能做簡單的回覆而已，這篇將說明其他的基本指令程式碼</p>
+<h1 id="機器人編寫的基本概念"><a href="#機器人編寫的基本概念" class="headerlink" title="機器人編寫的基本概念"></a>機器人編寫的基本概念</h1><h2 id="基本邏輯"><a href="#基本邏輯" class="headerlink" title="基本邏輯"></a>基本邏輯</h2><p>Discord機器人的本質就是收到事件=&gt;然後執行一個動作，在這樣簡單的邏輯之下能利用你的創造力搭配各種Package寫出各式各樣的指令。</p>
 <span id="more"></span>
 
-<h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><p>進到 <a target="_blank" rel="noopener" href="https://nodejs.org/en/download/current/">官方下載頁</a> ，直接下載安裝檔進行安裝就會自動更新了</p>
-<p><img src="https://i.imgur.com/Hm7yfAd.png" alt="image-20220403003321129"></p>
-<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><p>其實這篇主要是想講Linux，要更新我們會使用指令，<a target="_blank" rel="noopener" href="https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions">這裡是指令頁面</a></p>
-<p><img src="https://i.imgur.com/CAp4vzA.png" alt="image-20220403003600485"></p>
-<p>例如 Node v17 的下載指令為</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+<p>這裡是一個基本的機器人程式碼</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Discord = <span class="built_in">require</span>(<span class="string">&#x27;discord.js&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> client = <span class="keyword">new</span> Discord.Client(&#123; <span class="attr">Intents</span>: <span class="number">32767</span> &#125;);</span><br><span class="line"></span><br><span class="line">client.on(<span class="string">&#x27;ready&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`已經登錄機器人 <span class="subst">$&#123;client.user.tag&#125;</span> !`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">client.on(<span class="string">&#x27;messageCreate&#x27;</span>, <span class="function">(<span class="params">message</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (message.content === <span class="string">&#x27;!ping&#x27;</span>) &#123;</span><br><span class="line">        message.reply(<span class="string">`<span class="subst">$&#123;client.ws.ping&#125;</span>ms`</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(message.content === <span class="string">&#x27;!discordid&#x27;</span>)&#123;</span><br><span class="line">        message.reply(<span class="string">`你的discord id是<span class="subst">$&#123;message.author.id&#125;</span>`</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">client.login(<span class="string">&#x27;請把你的Token放在這裡&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
-<h1 id="查詢Node-js版本"><a href="#查詢Node-js版本" class="headerlink" title="查詢Node.js版本"></a>查詢Node.js版本</h1><p>要查詢版本，我們會用</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure>
+<p>這個機器人會對兩個指令產生反應， <code>!ping</code> 跟 <code>!discordid</code> 。當!ping的時候會回覆機器人的延遲毫秒，!discordid的時候會回覆訊息作者的id，只要學會更多程式碼，就能利用這個編寫無窮無盡的指令。</p>
+<h2 id="接收訊息-amp-發送訊息"><a href="#接收訊息-amp-發送訊息" class="headerlink" title="接收訊息&amp;發送訊息"></a>接收訊息&amp;發送訊息</h2><p>MessageCreate這個event會回傳message參數，而我們將利用其進行互動(互動方式可見 3.如何閱讀Docs)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">client.on(<span class="string">&#x27;messageCreate&#x27;</span>, <span class="function">(<span class="params">message</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//程式碼</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<p>這在Windows或Linux都適用</p>
-<p><img src="https://i.imgur.com/GzTu4Og.png" alt="image-20220403003812764"></p>
+<p>要對於使用者的行動做出反應最簡單的就是發送訊息，以下講解發送訊息的幾個方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">message.channel.send(<span class="string">&#x27;Hello World&#x27;</span>);</span><br><span class="line"><span class="comment">// 在訊息所在的頻道發送訊息</span></span><br><span class="line"></span><br><span class="line">message.reply(<span class="string">&#x27;Hello World&#x27;</span>);</span><br><span class="line"><span class="comment">// 在訊息所在的頻道以回覆的方式發送訊息</span></span><br><span class="line"></span><br><span class="line">client.channels.cache.find(<span class="function"><span class="params">c</span> =&gt;</span> c.id === <span class="string">&#x27;832224150054764555&#x27;</span>).send(<span class="string">&#x27;Hello World&#x27;</span>);</span><br><span class="line"><span class="comment">// 在id為832224150054764555的頻道發送訊息</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="閱讀文檔"><a href="#閱讀文檔" class="headerlink" title="閱讀文檔"></a>閱讀文檔</h2><p>到底接收到的參數可以做些什麼互動呢，這裡就要用Docs文檔來解決，他就像是discord.js的說明書，有問題都可以找他!</p>
+<ol>
+<li><p>打開 <a target="_blank" rel="noopener" href="https://discord.js.org/#/docs/discord.js/stable/general/welcome">文檔首頁</a></p>
+</li>
+<li><p>搜尋client<br><img src="https://i.imgur.com/p01t9km.png"></p>
+</li>
+</ol>
+<p>首先文檔說明了宣告client的方法，我們在前面就是使用 <code>const client = new Discord.Client(&#123; Intents: 32767 &#125;);</code> 進行定義</p>
+<p><img src="https://i.imgur.com/nxQ53D4.png">  </p>
+<p>(未完成 歡迎閱讀這個網站的其他文章!)</p>
 
     </div>
 
@@ -251,7 +258,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>文章連結：</strong>
-    <a href="https://pikachutw.github.io/blog/2022-04-03-01/" title="【Node.js】在Windows與Linux快速更新Node.js的方法">https://pikachutw.github.io/blog/2022-04-03-01/</a>
+    <a href="https://pikachutw.github.io/blog/2022-02-24-01/" title="【從零開始的Discord.js生活】(二) Discord.js基本架構講解">https://pikachutw.github.io/blog/2022-02-24-01/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 許可協議。轉載請註明出處！
@@ -261,10 +268,6 @@
 
 
       <footer class="post-footer">
-          
-          <div class="post-tags">
-              <a href="/tags/Node-js/" rel="tag"><i class="fa fa-tag"></i> Node.js</a>
-          </div>
 
         
 
@@ -272,10 +275,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022-03-25-01/" rel="prev" title="【Node.js】MongoDB資料庫操作教學">
-      <i class="fa fa-chevron-left"></i> 【Node.js】MongoDB資料庫操作教學
+    <a href="/2022-02-23-01/" rel="prev" title="【從零開始的Discord.js生活】(一) 建立機器人">
+      <i class="fa fa-chevron-left"></i> 【從零開始的Discord.js生活】(一) 建立機器人
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022-03-22-01/" rel="next" title="【Discord.js】製作無資料庫Snipe指令的方法">
+      【Discord.js】製作無資料庫Snipe指令的方法 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -335,7 +341,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows"><span class="nav-number">1.</span> <span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux"><span class="nav-number">2.</span> <span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E8%A9%A2Node-js%E7%89%88%E6%9C%AC"><span class="nav-number">3.</span> <span class="nav-text">查詢Node.js版本</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A9%9F%E5%99%A8%E4%BA%BA%E7%B7%A8%E5%AF%AB%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">機器人編寫的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%82%8F%E8%BC%AF"><span class="nav-number">1.1.</span> <span class="nav-text">基本邏輯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E8%A8%8A%E6%81%AF-amp-%E7%99%BC%E9%80%81%E8%A8%8A%E6%81%AF"><span class="nav-number">1.2.</span> <span class="nav-text">接收訊息&amp;發送訊息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%B1%E8%AE%80%E6%96%87%E6%AA%94"><span class="nav-number">1.3.</span> <span class="nav-text">閱讀文檔</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -465,7 +471,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'blog-comments',
       owner       : 'PikachuTW',
       admin       : ['PikachuTW'],
-      id          : 'e809c07a6c9e4819a1b63a3c45bb79a9',
+      id          : '8c06c94fd61eb275800ae63098f9d782',
         language: 'zh-TW',
       distractionFreeMode: false
     });
